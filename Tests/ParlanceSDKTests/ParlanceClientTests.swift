@@ -228,7 +228,7 @@ struct ParlanceClientTests {
           "name": "Nav Bar",
           "description": null,
           "category": "molecule",
-          "status": "agreed",
+          "status": "active",
           "created_at": "2024-01-01T00:00:00Z",
           "updated_at": "2024-01-02T00:00:00Z",
           "platform_count": 3,
@@ -239,7 +239,7 @@ struct ParlanceClientTests {
         #expect(summary.id == "c-1")
         #expect(summary.name == "Nav Bar")
         #expect(summary.category == .molecule)
-        #expect(summary.status == .agreed)
+        #expect(summary.status == .active)
         #expect(summary.platformCount == 3)
         #expect(summary.latestScore == 92.5)
     }

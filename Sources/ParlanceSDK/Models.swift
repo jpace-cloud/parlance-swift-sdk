@@ -40,12 +40,33 @@ public struct Project: Codable, Identifiable, Sendable, Equatable {
 // MARK: - Contract types + Category / Status
 // ---------------------------------------------------------------------------
 
-public enum ContractCategory: String, Codable, Sendable {
-    case atom, molecule, organism, template, custom
+/// The category of a contract component — an open-ended string matching known levels.
+/// Canonical values are `atom`, `molecule`, `organism`, `template`, `page`, but the
+/// platform stores category as free text, so unknown values decode without error.
+public struct ContractCategory: Codable, Sendable, Equatable, RawRepresentable, Hashable {
+    public let rawValue: String
+
+    public init(rawValue: String) { self.rawValue = rawValue }
+
+    public static let atom      = ContractCategory(rawValue: "atom")
+    public static let molecule  = ContractCategory(rawValue: "molecule")
+    public static let organism  = ContractCategory(rawValue: "organism")
+    public static let template  = ContractCategory(rawValue: "template")
+    public static let page      = ContractCategory(rawValue: "page")
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        rawValue = try container.decode(String.self)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue)
+    }
 }
 
 public enum ContractStatus: String, Codable, Sendable {
-    case draft, proposed, agreed, divergent
+    case draft, active, archived, deprecated
 }
 
 /// Platform-specific implementation detail embedded in a contract detail response.
@@ -83,12 +104,13 @@ public struct EmbeddedGlossaryTerm: Codable, Sendable {
     public let name: String
     public let rawValue: String
     public let category: String
+    public let description: String?
     public let translations: [String: String]
 
     private enum CodingKeys: String, CodingKey {
         case name
         case rawValue = "raw_value"
-        case category, translations
+        case category, description, translations
     }
 }
 
@@ -169,18 +191,20 @@ public struct ContractInput: Encodable, Sendable {
 // ---------------------------------------------------------------------------
 
 /// The origin field on a contract — an open-ended string matching known tool names.
-/// Maps to the TS `Origin` type (string union): figma | sketch | adobe-xd | penpot | zeplin | manual | …
+/// Canonical platform values: `figma`, `code`, `manual`. Additional values tolerated.
 public struct ContractOrigin: Codable, Sendable, Equatable, RawRepresentable {
     public let rawValue: String
 
     public init(rawValue: String) { self.rawValue = rawValue }
 
     public static let figma     = ContractOrigin(rawValue: "figma")
+    public static let code      = ContractOrigin(rawValue: "code")
+    public static let manual    = ContractOrigin(rawValue: "manual")
+    // Legacy / extended tool names — kept for backward compat with older records.
     public static let sketch    = ContractOrigin(rawValue: "sketch")
     public static let adobeXD  = ContractOrigin(rawValue: "adobe-xd")
     public static let penpot    = ContractOrigin(rawValue: "penpot")
     public static let zeplin    = ContractOrigin(rawValue: "zeplin")
-    public static let manual    = ContractOrigin(rawValue: "manual")
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -205,6 +229,8 @@ public struct GlossaryTerm: Codable, Identifiable, Sendable, Equatable {
     /// Raw / source value in design tokens or source files.
     public let rawValue: String
     public let category: String
+    /// Optional human-readable description (maps to `glossary_values.description` on the platform).
+    public let description: String?
     public let translations: [String: String]
     public let createdAt: String
     public let updatedAt: String
@@ -214,6 +240,7 @@ public struct GlossaryTerm: Codable, Identifiable, Sendable, Equatable {
         name: String,
         rawValue: String = "",
         category: String = "",
+        description: String? = nil,
         translations: [String: String] = [:],
         createdAt: String = "",
         updatedAt: String = ""
@@ -222,6 +249,7 @@ public struct GlossaryTerm: Codable, Identifiable, Sendable, Equatable {
         self.name = name
         self.rawValue = rawValue
         self.category = category
+        self.description = description
         self.translations = translations
         self.createdAt = createdAt
         self.updatedAt = updatedAt
@@ -230,7 +258,7 @@ public struct GlossaryTerm: Codable, Identifiable, Sendable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id, name
         case rawValue = "raw_value"
-        case category, translations
+        case category, description, translations
         case createdAt = "created_at"
         case updatedAt = "updated_at"
     }
@@ -241,17 +269,19 @@ public struct GlossaryTermInput: Encodable, Sendable {
     public let name: String
     public let rawValue: String
     public let category: String?
+    public let description: String?
 
-    public init(name: String, rawValue: String, category: String? = nil) {
+    public init(name: String, rawValue: String, category: String? = nil, description: String? = nil) {
         self.name = name
         self.rawValue = rawValue
         self.category = category
+        self.description = description
     }
 
     private enum CodingKeys: String, CodingKey {
         case name
         case rawValue = "raw_value"
-        case category
+        case category, description
     }
 }
 
