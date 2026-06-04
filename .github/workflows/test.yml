@@ -1,0 +1,23 @@
+name: test
+
+on:
+  push:
+    branches: [main, 'feat/**']
+  pull_request:
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # macos-15 ships Xcode 16 (Swift 6). The package targets macOS 14+
+    # and uses Swift Testing (@Suite / @Test); Swift 6 strict concurrency
+    # is required for the URLProtocol stub's @unchecked Sendable patterns.
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build
+        run: swift build
+      - name: Test
+        run: swift test
