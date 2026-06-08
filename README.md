@@ -1,6 +1,6 @@
 # parlance-swift-sdk
 
-Swift Package Manager library — the shared Swift client SDK for the [Parlance](https://parlance.business) API.
+Swift Package Manager library — the shared Swift client SDK for the [Parlance](https://parlancelabs.net) API.
 
 This is the Swift counterpart to the TypeScript `@parlance/sdk`. Consumed by `parlance-xcode` and `parlance-native-auditor`.
 
