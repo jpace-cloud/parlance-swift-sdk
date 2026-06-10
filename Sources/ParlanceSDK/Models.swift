@@ -290,7 +290,7 @@ public struct GlossaryTermInput: Encodable, Sendable {
 // ---------------------------------------------------------------------------
 
 public enum AuditSeverity: String, Codable, Sendable {
-    case error, warning, info
+    case critical, error, warning, info
 }
 
 /// A single audit finding to be sent to the API.
@@ -300,19 +300,23 @@ public struct AuditResultItem: Encodable, Sendable {
     public let message: String
     public let filePath: String?
     public let elementSelector: String?
+    /// Concrete remediation for this finding, persisted server-side.
+    public let suggestedFix: String?
 
     public init(
         ruleId: String,
         severity: AuditSeverity,
         message: String,
         filePath: String? = nil,
-        elementSelector: String? = nil
+        elementSelector: String? = nil,
+        suggestedFix: String? = nil
     ) {
         self.ruleId = ruleId
         self.severity = severity
         self.message = message
         self.filePath = filePath
         self.elementSelector = elementSelector
+        self.suggestedFix = suggestedFix
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -320,13 +324,29 @@ public struct AuditResultItem: Encodable, Sendable {
         case severity, message
         case filePath = "file_path"
         case elementSelector = "element_selector"
+        case suggestedFix = "suggested_fix"
     }
 }
 
 /// The input payload for ``ParlanceClient/pushAuditResults(projectId:input:)``.
 public struct AuditResultInput: Encodable, Sendable {
     public let results: [AuditResultItem]
-    public init(results: [AuditResultItem]) { self.results = results }
+    /// The audited page URL — recorded as the audit's target server-side.
+    public let pageUrl: String?
+    /// Overall audit score 0–100 — recorded as the audit's overall score.
+    public let score: Int?
+
+    public init(results: [AuditResultItem], pageUrl: String? = nil, score: Int? = nil) {
+        self.results = results
+        self.pageUrl = pageUrl
+        self.score = score
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case results
+        case pageUrl = "page_url"
+        case score
+    }
 }
 
 /// Response from pushAuditResults — POST /api/v1/projects/:id/audit-results returns { inserted: N }.
