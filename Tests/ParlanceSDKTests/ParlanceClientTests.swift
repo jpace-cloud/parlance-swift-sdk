@@ -72,7 +72,7 @@ private func makeClient(
     let (session, id) = MockURLProtocol.makeSession(handler: handler)
     let client = ParlanceClient(
         apiKey: "test-key-123",
-        baseURL: "https://api.parlance.business",
+        baseURL: "https://api.parlancelabs.net",
         clientName: "swift-sdk-tests/1.0.0",
         session: session
     )
@@ -81,7 +81,7 @@ private func makeClient(
 
 private func httpResponse(path: String, statusCode: Int = 200) -> HTTPURLResponse {
     HTTPURLResponse(
-        url: URL(string: "https://api.parlance.business\(path)")!,
+        url: URL(string: "https://api.parlancelabs.net\(path)")!,
         statusCode: statusCode,
         httpVersion: "HTTP/1.1",
         headerFields: ["Content-Type": "application/json"]

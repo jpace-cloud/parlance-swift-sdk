@@ -34,12 +34,12 @@ public final class ParlanceClient: @unchecked Sendable {
 
     /// - Parameters:
     ///   - apiKey: Parlance API key — sent as `Authorization: Bearer …`.
-    ///   - baseURL: Override the API base URL. Defaults to `https://api.parlance.business`.
+    ///   - baseURL: Override the API base URL. Defaults to `https://api.parlancelabs.net`.
     ///   - clientName: Identifies the caller, e.g. `xcode-extension/1.0.0`. Sent as `X-Parlance-Client`.
     ///   - session: Injectable `URLSession` (useful in tests).
     public init(
         apiKey: String,
-        baseURL: String = "https://api.parlance.business",
+        baseURL: String = "https://api.parlancelabs.net",
         clientName: String,
         session: URLSession = .shared
     ) {
