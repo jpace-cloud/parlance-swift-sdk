@@ -20,7 +20,7 @@ In your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/parlance-biz/parlance-swift-sdk", from: "0.1.0"),
+    .package(url: "https://github.com/jpace-cloud/parlance-swift-sdk", branch: "main"),
 ],
 targets: [
     .target(
@@ -29,6 +29,8 @@ targets: [
     ),
 ]
 ```
+
+> No tagged release exists yet, so pin to `branch: "main"` for now. A tagged semver release (`from: "0.1.0"`) is coming.
 
 ## Quick start
 
