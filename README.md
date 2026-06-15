@@ -20,7 +20,7 @@ In your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/parlance-biz/parlance-swift-sdk", branch: "main"),
+    .package(url: "https://github.com/jpace-cloud/parlance-swift-sdk", branch: "main"),
 ],
 targets: [
     .target(
