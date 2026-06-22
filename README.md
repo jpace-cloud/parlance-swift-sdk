@@ -20,7 +20,7 @@ In your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/parlance-biz/parlance-swift-sdk", from: "0.1.0"),
+    .package(url: "https://github.com/jpace-cloud/parlance-swift-sdk.git", from: "0.1.0"),
 ],
 targets: [
     .target(
@@ -90,4 +90,4 @@ do {
 
 ## License
 
-Copyright © 2024 Parlance. All rights reserved.
+Copyright (c) 2026 Parlance Labs. All rights reserved. See [LICENSE.txt](LICENSE.txt).
