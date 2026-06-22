@@ -518,7 +518,9 @@ public struct WorstPerformingContract: Codable, Sendable {
     public let contractId: String
     public let contractName: String
     public let score: Double
-    public let wcagLevel: String
+    /// WCAG conformance level ("A" | "AA" | "AAA"). The platform returns `null`
+    /// when a contract has not yet been scored against a target level.
+    public let wcagLevel: String?
 
     private enum CodingKeys: String, CodingKey {
         case contractId = "contract_id"

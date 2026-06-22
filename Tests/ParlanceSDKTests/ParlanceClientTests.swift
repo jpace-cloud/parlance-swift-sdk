@@ -892,6 +892,31 @@ struct StandardsTests {
         #expect(standard.worstPerforming[0].contractName == "Old Modal")
         #expect(standard.worstPerforming[0].wcagLevel == "A")
     }
+
+    @Test("getStandards: null worst_performing wcag_level decodes to nil")
+    func getStandardsNullWcagLevel() async throws {
+        // The live API returns wcag_level: null for not-yet-scored contracts.
+        let body = """
+            {
+              "data": {
+                "project_id": "proj-1", "average_score": 85.0,
+                "total_contracts": 9, "by_wcag_level": {},
+                "worst_performing": [{
+                  "contract_id": "c-x", "contract_name": "Navbar",
+                  "score": 79.0, "wcag_level": null
+                }]
+              }
+            }
+            """
+        let (client, id) = makeClient { _ in
+            (j(body), httpResponse(path: "/api/v1/projects/proj-1/standards"))
+        }
+        defer { MockURLProtocol.remove(id: id) }
+        let standards = try await client.getStandards(projectId: "proj-1")
+        #expect(standards.worstPerforming.count == 1)
+        #expect(standards.worstPerforming[0].contractName == "Navbar")
+        #expect(standards.worstPerforming[0].wcagLevel == nil)
+    }
 }
 
 // ---------------------------------------------------------------------------

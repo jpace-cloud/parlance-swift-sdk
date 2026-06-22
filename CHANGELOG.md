@@ -29,4 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - URLProtocol-stubbed unit test coverage for all `ParlanceClient` methods.
 - GitHub Actions test workflow.
 
+### Fixed
+
+- `Standard.worstPerforming[].wcagLevel` is now optional (`String?`). The live
+  API returns `null` for contracts not yet scored against a target WCAG level,
+  which previously caused `getStandards` to fail decoding. Verified against
+  `api.parlancelabs.net`.
+
 [0.1.0]: https://github.com/jpace-cloud/parlance-swift-sdk/releases/tag/0.1.0
