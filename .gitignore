@@ -4,3 +4,4 @@
 *.xcworkspace
 *.resolved
 DerivedData/
+.DS_Store
