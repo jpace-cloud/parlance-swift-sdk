@@ -90,4 +90,4 @@ do {
 
 ## License
 
-Copyright (c) 2026 Parlance Labs. All rights reserved. See [LICENSE.txt](LICENSE.txt).
+Licensed under the [Apache License 2.0](LICENSE.txt). Copyright © 2026 Parlance Labs.

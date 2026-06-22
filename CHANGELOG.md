@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Initial release of `ParlanceSDK`, the Swift client for the Parlance API.
+- Licensed under the Apache License 2.0.
 - `ParlanceClient` with a user-supplied API key (`Authorization: Bearer`) and a
   default base URL of `https://api.parlancelabs.net`.
 - Projects: `listProjects`.
